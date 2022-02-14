@@ -1,0 +1,47 @@
+---
+title: "Homework 1"
+author: "Kai Aragaki"
+output:
+  tufte::tufte_handout: default
+---
+
+# Problem 1
+   a. iii - the mean and median are about the same. The distribution is roughly
+      symmetric, and there do not appear to be any large outliers (which the mean is sensitive to).
+   b. Were this a normal distribution, we could assume that a standard deviation
+      would encapsulate roughly 2/3s of the data present. By eye, a range that
+      surrounds the putative mean (~100) by +/- 25 appears to capture roughly
+      2/3s of these data, while +/- 10 appears to capture too little and +/- 50
+      too much.
+
+# Problem 2
+
+We will assume that when our doctor talked about infection or repair failure risk, he was talking about the risk of getting ONLY an infection or ONLY a fail to repair, not both at the same time. If that is the case:
+
+```{r chances}
+data.frame(type = c("infection", "failure", "both", "neither"),
+           risk = c("3%", "14%", "1%", "X"))
+```
+So 
+
+```{r chance_calc}
+x <- 100 - 3 - 14 - 1
+x
+```
+
+`r x`% of these opporations are successful and infection-free.
+
+# Problem 3
+
+Suppose there is a group of 1,000,000 people, and one (and only one) of these people has the variant. With a specificity of 99.99%, that means that
+
+```{r num_pos}
+false_pos <- 1000000 * 0.0001
+false_pos
+```
+
+`r false_pos` will receive results telling them they are positive for this variant, even though they are not! This means that a positive test result means relatively little, as most of the time a positive result will simply be a false positive. 
+
+# Problem 4
+
+
