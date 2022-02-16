@@ -6,11 +6,12 @@ output:
 ---
 
 # Problem 1
-   a. iii - the mean and median are about the same. The distribution is roughly
+   a. **iii** - the mean and median are about the same. The distribution is roughly
       symmetric, and there do not appear to be any large outliers (which the mean is sensitive to).
+      
    b. Were this a normal distribution, we could assume that a standard deviation
       would encapsulate roughly 2/3s of the data present. By eye, a range that
-      surrounds the putative mean (~100) by +/- 25 appears to capture roughly
+      surrounds the putative mean (~100) by +/- **25** appears to capture roughly
       2/3s of these data, while +/- 10 appears to capture too little and +/- 50
       too much.
 
@@ -18,30 +19,130 @@ output:
 
 We will assume that when our doctor talked about infection or repair failure risk, he was talking about the risk of getting ONLY an infection or ONLY a fail to repair, not both at the same time. If that is the case:
 
-```{r chances}
-data.frame(type = c("infection", "failure", "both", "neither"),
-           risk = c("3%", "14%", "1%", "X"))
-```
-So 
+$Pr(infection) = 3\%$
+
+$Pr(failure) = 14\%$
+
+$Pr(infection\ and\ failure) = 1\%$
+
+Taking these two variables into account, there is only one other outcome that can happen: No infection and no failure. Since the probability of all outcomes must sum to 1,
 
 ```{r chance_calc}
 x <- 100 - 3 - 14 - 1
 x
 ```
 
-`r x`% of these opporations are successful and infection-free.
+**`r x`% of these operations are successful and infection-free.**
 
 # Problem 3
 
-Suppose there is a group of 1,000,000 people, and one (and only one) of these people has the variant. With a specificity of 99.99%, that means that
+Specificity and sensitivity do not take prevalence into account. One issue that tests for low prevalence diseases have is a very low positive predictive value. This value informs how we should interpret a positive result if we get one. Let's find out what this value is.
 
-```{r num_pos}
-false_pos <- 1000000 * 0.0001
-false_pos
+$sensitivity = Pr(test\ pos|is\ pos) = 100\%$
+
+$specificity = Pr(test\ neg|is\ neg) = 99.99\%$
+
+and we want to know
+
+$Pr(is\ pos|test\ pos)$
+
+We know from Bayes' theorem that 
+
+$Pr(A|B) = \frac{Pr(B|A)\times Pr(A)}{Pr(B)}$
+
+So we know that
+
+$Pr(is\ pos|test\ pos) = \frac{Pr(test\ pos|is\ pos)\times Pr(is\ pos)}{Pr(test\ pos)}$
+
+$Pr(test\ pos)$ can be divided into two components: tests that are positive and the testee is positive (true positive) and tests that are positive and the testee is negative (false positive):
+
+$Pr(test\ pos) = Pr(test\ pos\ and\ is\ pos) + Pr(test\ pos\ and\ is\ neg)$
+
+We also know that
+
+$Pr(A\ and\ B) = Pr(B)\times Pr(A|B)$
+
+So
+
+$Pr(test\ pos) = Pr(is\ pos)\times Pr(test\ pos|is\ pos) + Pr(is\ neg)\times Pr(test\ pos|is\ neg)$
+
+To simplify, we can say
+
+$Pr(test\ pos) = prevalence \times sensitivity + (1-prevalence) \times (1-specificity)$
+
+And plugging this back into Bayes' theorum:
+
+$Pr(is pos|test pos) = \frac{Pr(test pos|is pos)\times Pr(is pos)}{prevalence \times sensitivity + (1-prevalence)\times(1-specificity)}$
+
+$Pr(is pos|test pos) = \frac{sensitivity \times prevalence}{sensitivity \times prevalence + (1-prevalence)\times(1-specificity)}$
+
+```{r calc_ppv}
+ppv <- (1e-6) / (1e-6 + ((1 - 1e-6) * 0.0001))
+ppv
 ```
 
-`r false_pos` will receive results telling them they are positive for this variant, even though they are not! This means that a positive test result means relatively little, as most of the time a positive result will simply be a false positive. 
+The positive predictive value is `r ppv`, or `r 100 * ppv`%. This means that, given a positive test result, only ~`r round(100 * ppv)`% of them are truly positive cases. In a general population, a positive test tells you very little.
 
 # Problem 4
 
+I'm assuming that the probability of the infection of one person is independent of the probability of all others being infected
 
+## A
+
+We can use the binomial function for this. Breaking into its components, we ask first 'how many permutations might I expect to see this outcome?'
+
+$\binom{n}{k} = \frac{n!}{k!\times(n-k)!} = \frac{50!}{0!\times(50-0)!} = 1$
+
+Only 1!
+
+Then, to find its probability, we do:
+
+$1\times(.85)^{50}\times(.15)^0$
+
+```{r binom_no_infections}
+a <- 1 * (.85)^50 * (.15)^0
+a
+```
+
+**So ~`r signif(a, 2) * 100`% chance that no one gets infected.**
+
+
+## B
+
+We could do that same exercise as above for k = 10, k = 9, etc... and add all the probabilities together. However, we can also do the following:
+
+```{r binom_most_10}
+b <- pbinom(10, 50, 0.15)
+b
+```
+
+**There is ~`r signif(b, 2) * 100`% chance that 10 or fewer people got infected**
+
+## C
+
+To see if k or _more_ individuals got infected, we do
+
+```{r binom_more_5}
+c <- pbinom(5, 50, 0.15, lower.tail = F) # I know. I'm using c as a variable.
+c
+```
+
+
+**There is ~`r signif(b, 2) * 100`% chance that more than 5 people got infected**
+
+## D
+
+It is difficult to say for certain, since if we look at the probability density
+
+```{r binom_dense}
+plot(1:20, dbinom(1:20, 50, 0.15)) + abline(h = 0.033)
+```
+
+we note there are two points that have a probability of around 3.3%: 3 infections, and 12 infections. However, if we calculate the exact probabilities using `dbinom`...
+
+```{r qbinom_investigation}
+dbinom(3, 50, 0.15)
+dbinom(12, 50, 0.15)
+```
+
+**We note that `n = 12` rounds to 0.033 (or 3.3%). This is the most likely answer.**
