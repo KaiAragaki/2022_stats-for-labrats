@@ -5,3 +5,5 @@
 *.tex
 *.pdf
 *.md
+*.out
+*.aux
