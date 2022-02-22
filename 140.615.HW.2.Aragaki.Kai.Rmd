@@ -1,0 +1,101 @@
+---
+title: "Homework 2"
+author: "Kai Aragaki"
+output:
+  tufte::tufte_handout: default
+---
+
+# Problem 1
+
+## A
+
+We can calculate the expectation value from the formula
+
+$E[X]=\int^{\infty}_{-\infty}xf(x)dx$
+
+We know that the area under the curve of a probability density function must
+equal 1. Additionally, we know that the uniform distribution is a rectangle with a length along the bottom equal to $b-a$. Therefore, the height must equal $\frac{1}{b-a}$. Since this is $f(x)$, our integral has simplified:
+
+$E[X]=\frac{1}{b-a}\int^{\infty}_{-\infty}xdx=\frac{1}{b-a}|^{\infty}_{-\infty}x^2$
+
+We also know that the uniform function is zero everywhere not between $a$ and $b$, simplifying this equation to
+
+$E[X]=\frac{1}{b-a}|^b_ax^2 = \frac{1}{2}(a+b)$
+
+So,
+
+$E[X]=7.5$
+
+## B
+The probability for any particular point for a probability density function is $0$
+
+## C
+We know the cumulative distribution function is the integral of the probability density function from $-\infty$ to $t$. In part **A** we found
+
+$f(x)=\frac{1}{b-a}$
+
+Since we know the probability is 0 up to $a$, the CDF becomes
+
+$|^t_ax\frac{1}{b-a}=\frac{t}{b-a}-\frac{a}{b-a}=\frac{t-a}{b-a}$
+
+Therefore
+
+$Pr(U>6) = 1 - Pr(U\le6) = 1 - \frac{6-5}{10-5} = 1 - \frac{1}{5} = \frac{4}{5}$
+
+## D
+
+Using the above formula,
+
+$Pr(7 < U < 9) = Pr(U < 9) - Pr(U < 7) = \frac{9-5}{10-5} - \frac{7-5}{10-5} = \frac{4}{5}-\frac{2}{5}=\frac{2}{5}$
+
+# Problem 2
+
+## A
+
+```{r norm_lt6}
+p2a <- pnorm(6, 5, 3)
+p2a
+```
+Roughly a `r round(p2a*100)`% probability 
+
+## B
+
+```{r norm_gt0}
+p2b <- pnorm(0, 5, 3, lower.tail = FALSE)
+p2b
+```
+
+Roughly a `r round(p2b*100)`% probability 
+
+## C 
+
+```{r norm_gt0_lt5}
+p2c <- pnorm(5, 5, 3) - pnorm(0, 5, 3)
+p2c
+```
+
+Roughly a `r round(p2c*100)`% probability 
+
+## D 
+
+```{r norm_gt2_lt8}
+p2d <- pnorm(8, 5, 3) - pnorm(2, 5, 3)
+p2d
+```
+
+Roughly a `r round(p2d*100)`% probability 
+
+## E
+
+This essentially changes the distribution of $X$ to be $X \sim Normal(mean=0,\ SD=3)$
+
+```{r norm_gt2_lt8_0}
+p2e <- pnorm(2, 0, 3, lower.tail = FALSE)
+p2e
+```
+ 
+Roughly a `r round(p2e*100)`% probability 
+
+# Problem 3
+
+

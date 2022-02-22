@@ -131,7 +131,6 @@ c
 **There is ~`r signif(b, 2) * 100`% chance that more than 5 people got infected**
 
 ## D
-
 It is difficult to say for certain, since if we look at the probability density
 
 ```{r binom_dense}
