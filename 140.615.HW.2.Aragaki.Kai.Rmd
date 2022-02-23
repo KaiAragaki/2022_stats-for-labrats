@@ -98,4 +98,13 @@ Roughly a `r round(p2e*100)`% probability
 
 # Problem 3
 
+We know that if $Y = a + bX$ then $E(Y) = a + bE(X)$.
+
+In this case, $Y = (X-7) \times 100 = -700 + 100X$, making $a = -700$ and $b = 100$ so
+
+$E(Y) = -700 + 100E(X) = -700 + 100\times 7.373 = 37.3$
+
+Additionally, we know that $SD(Y)=|b|SD(X)$. Using the information above:
+
+$SD(Y)=|100|\times 0.129 = 12.9$
 
