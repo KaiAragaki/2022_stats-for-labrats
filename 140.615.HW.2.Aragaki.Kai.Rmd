@@ -131,4 +131,4 @@ Using the same logic as above,
 pnorm(10.25, 10, 0.025, lower.tail = FALSE)
 ```
 
-As we may expect from the results seen above, there is a very slim chance that we will see a value that extreme.
+As we may expect from the results seen in part A, there is a very slim chance that we will see a value that extreme.
