@@ -108,3 +108,27 @@ Additionally, we know that $SD(Y)=|b|SD(X)$. Using the information above:
 
 $SD(Y)=|100|\times 0.129 = 12.9$
 
+# Problem 4
+
+
+## A
+
+We know that when we draw from a population that is normally distributed with mean $\mu$ and standard deviation $\sigma$, the sampling distribution is $\bar X \sim Normal(\mu ,\sigma/ \sqrt n)$ (provided the draws are iid)
+
+So we may ask, what is the chance of getting a number greater than 9.9 and less than 10.1 in the sampling distribution $Normal(10, 2.5/100)$?
+
+```{r pr4a}
+pnorm(10.1, 10, 0.025) - pnorm(9.9, 10, 0.025)
+```
+
+It's almost certain that it will be within 0.1 units of the population mean.
+
+## B
+
+Using the same logic as above,
+
+```{r pr4b}
+pnorm(10.25, 10, 0.025, lower.tail = FALSE)
+```
+
+As we may expect from the results seen above, there is a very slim chance that we will see a value that extreme.
