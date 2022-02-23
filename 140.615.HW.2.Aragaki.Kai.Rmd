@@ -113,7 +113,7 @@ $SD(Y)=|100|\times 0.129 = 12.9$
 
 ## A
 
-We know that when we draw from a population that is normally distributed with mean $\mu$ and standard deviation $\sigma$, the sampling distribution is $\bar X \sim Normal(\mu ,\sigma/ \sqrt n)$ (provided the draws are iid)
+We know that when we draw from a population that is normally distributed with mean $\mu$ and standard deviation $\sigma$, the sampling distribution is $\bar X \sim Normal(\mu ,\sigma/ \sqrt n)$ (provided the draws are iid). At 100 draws, we are told that what we see in real life should match up with the theoretical sampling distribution.
 
 So we may ask, what is the chance of getting a number greater than 9.9 and less than 10.1 in the sampling distribution $Normal(10, 2.5/100)$?
 
