@@ -43,10 +43,10 @@ ul <- x_bar + (t * s / sqrt(n))
 ```
 So the mean, with 95% confidence intervals, could be expressed as 140mm (`r round(ll, 2)`mm, `r round(ul, 2)`mm)
 
-Similarly, for a 99% confidence interval ($\alpha$ = 0.025, $\frac{\alpha}{2}$ = 0.0125),
+Similarly, for a 99% confidence interval ($\alpha$ = 0.01, $\frac{\alpha}{2}$ = 0.005),
 
 ```{r}
-t <- qt(1 - 0.0125, 399)
+t <- qt(1 - 0.005, 399)
 ll <- x_bar - (t * s / sqrt(n))
 ul <- x_bar + (t * s / sqrt(n))
 ```
@@ -111,3 +111,56 @@ ul <- (s^2 * df) / l
 ```
 
 So a 95% confidence interval for parameter $\sigma^2$ is `r round(ll, 2)` to `r round(ul, 2)`
+
+# Problem 4
+
+First, let's start with an analytic derivation:
+
+We calculate some standard values first:
+
+```{r }
+a <- c(132, 72, 102, 115, 59, 103, 86, 159, 60, 94, 80, 97)
+b <- c(101, 96, 93, 106, 81, 77, 106, 97, 74)
+n_a <- length(a)
+n_b <- length(b)
+df_a <- n_a - 1
+df_b <- n_b - 1
+v_a <- var(a)
+v_b <- var(b)
+s_a <- sd(a)
+s_b <- sd(b)
+x_a <- mean(a)
+x_b <- mean(b)
+```
+
+Then, since we have assumed that the population standard deviation with each strain is the same, we can pool the variances to get $\hat{\sigma}_{pooled}$:
+
+```{r }
+s_pool <- sqrt((v_a * df_a + v_b * df_b) / (df_a + df_b))
+```
+
+We can then calculate an estimated standard error for the difference of the two sample means using 
+
+$\hat{SD}(\bar{X} - \bar{Y}) = \hat{\sigma}_{pooled} \sqrt{\frac{1}{n_{a}}+\frac{1}{n_{b}}}$
+
+```{r }
+est_sd_diff <- s_pool * sqrt(1/n_a + 1/n_b)
+```
+
+The interval then comes to be 
+
+```{r }
+diff_mean <- x_a - x_b
+diff_int_ll <- (x_a - x_b) - qt(0.975, df_a + df_b) * est_sd_diff
+diff_int_ul <- (x_a - x_b) + qt(0.975, df_a + df_b) * est_sd_diff
+```
+
+So the 95% confidence interval for $\bar{X}_{a} - \bar{X}_{b}$ is `r round(diff_int_ll, 2)` to `r round(diff_int_ul, 2)`
+
+Now, as fun as this was, let's see if we can get the same results much more quickly using R's built in functions:
+```{r }
+tt <- t.test(a, b, var.equal = TRUE)
+tt$conf.int
+```
+
+A perfect match!
