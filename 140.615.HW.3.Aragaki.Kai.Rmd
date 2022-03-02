@@ -65,7 +65,7 @@ n <- length(mm)
 df <- n - 1
 
 x_bar <- mean(mm)
-s <- sd(mm)
+s <- sd(mm) # We should note: sd uses n-1 in the denominator as a default
 
 t <- qt(1 - alpha / 2, df)
 ll <- x_bar - (t * s / sqrt(n))
@@ -75,3 +75,39 @@ ul <- x_bar + (t * s / sqrt(n))
 So a 95% confidence interval for the population mean ranges from `r round(ll, 2)` to `r round(ul, 2)`
 
 ## B
+
+We know that a confidence interval for the standard deviation can be represented as 
+
+$$
+(S\sqrt{\frac{n-1}{U}}, S\sqrt{\frac{n-1}{L}})
+$$
+
+We can find our upper ($L$) and lower ($U$) values using the $\chi^2_{n-1}$ distribution
+
+
+```{r}
+l <- qchisq(alpha / 2, df)
+u <- qchisq(1 - alpha / 2, df)
+
+ll <- s * sqrt(df / u)
+ul <- s * sqrt(df / l)
+```
+
+So a 95% confidence interval for parameter $\sigma$ is `r round(ll, 2)` to `r round(ul, 2)`
+
+## C
+
+The confidence interval for the variance is simply the square of each end of the interval:
+
+$$
+(\frac{(n-1)S^2}{U}, \frac{(n-1)S^2}{L})
+$$
+
+So this can be calculated as
+
+```{r}
+ll <- (s^2 * df) / u
+ul <- (s^2 * df) / l
+```
+
+So a 95% confidence interval for parameter $\sigma^2$ is `r round(ll, 2)` to `r round(ul, 2)`
