@@ -1,0 +1,77 @@
+---
+title: "Homework 3"
+author: "Kai Aragaki"
+output:
+    tufte::tufte_handout: default
+---
+
+# Problem 1
+
+## A
+
+```{r}
+qt(0.95, 11)
+
+```
+The confidence intervals would then be calculated by $\bar x \pm 1.80 \times \frac{S}{\sqrt 12}$
+
+## B
+
+```{r}
+qt(0.975, 29)
+```
+The confidence intervals would then be calculated by $\bar x \pm 2.05 \times \frac{S}{\sqrt 30}$
+
+## C
+
+```{r}
+qt(0.9, 17)
+```
+The confidence intervals would then be calculated by $\bar x \pm 1.33 \times \frac{S}{\sqrt 17}$
+
+# Problem 2
+
+For a 95% confidence interval ($\alpha$ = 0.05, so $\frac{\alpha}{2}$ = 0.025)
+
+```{r}
+n <- 400
+x_bar <- 140
+s <- 25
+t <- qt(0.975, 399)
+ll <- x_bar - (t * s / sqrt(n))
+ul <- x_bar + (t * s / sqrt(n))
+```
+So the mean, with 95% confidence intervals, could be expressed as 140mm (`r round(ll, 2)`mm, `r round(ul, 2)`mm)
+
+Similarly, for a 99% confidence interval ($\alpha$ = 0.025, $\frac{\alpha}{2}$ = 0.0125),
+
+```{r}
+t <- qt(1 - 0.0125, 399)
+ll <- x_bar - (t * s / sqrt(n))
+ul <- x_bar + (t * s / sqrt(n))
+```
+
+Giving a mean, with 99% confidence intervals, could be expressed as 140mm (`r round(ll, 2)`mm, `r round(ul, 2)`mm)
+
+# Problem 3
+
+## A
+
+```{r}
+# Our measurements
+mm <- c(107, 101, 93, 94, 96, 114)
+alpha <- 0.05
+n <- length(mm)
+df <- n - 1
+
+x_bar <- mean(mm)
+s <- sd(mm)
+
+t <- qt(1 - alpha / 2, df)
+ll <- x_bar - (t * s / sqrt(n))
+ul <- x_bar + (t * s / sqrt(n))
+```
+
+So a 95% confidence interval for the population mean ranges from `r round(ll, 2)` to `r round(ul, 2)`
+
+## B
