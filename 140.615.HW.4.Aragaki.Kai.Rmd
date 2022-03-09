@@ -1,0 +1,86 @@
+---
+title: "Homework 4"
+author: "Kai Aragaki"
+output:
+    tufte::tufte_handout: default
+---
+
+# Problem 1
+
+The confidence intervals can be calculated using the following formula:
+
+$$
+(\bar X - \bar Y) \pm t \cdot \widehat{SD}(\bar X - \bar Y)
+$$
+
+$(\bar X - \bar Y)$ can be calculated like so:
+
+```{r }
+a <- c(84, 106, 99, 101, 100, 99, 127, 105, 101, 108)
+n_a <- length(a)
+df_a <- n_a - 1
+b <- c(56, 62, 67, 81, 69)
+n_b <- length(b)
+df_b <- n_b - 1
+mean_diff <- mean(a) - mean(b)
+```
+
+The pooled estimate of our population $\sigma$ is essentially a weighted mean of our standard deviations:
+
+```{r }
+est_sig_pool <- sqrt((var(a) * df_a + var(b) * df_b) / (df_a + df_b))
+```
+
+And the estimated standard error is then calculated as
+
+```{r }
+est_se <- est_sig_pool * sqrt(1 / n_a + 1 / n_b)
+```
+
+Our $t$ distribution should reflect our number of degrees of freedom (`r df_a + df_b`) as well as our desired span of confidence.
+
+For 95%, we choose
+
+```{r }
+t_95 <- qt(0.975, df_a + df_b)
+```
+
+So our confidence intervals become
+
+```{r }
+ll <- mean_diff - t_95 * est_se
+ul <- mean_diff + t_95 * est_se
+```
+
+The 95% confidence interval $\mu_{a} - \mu_{b}$ is (`r paste(round(ll, 2), ",", round(ul, 2))`)
+
+The 95% confidence interval can be calculated using a different cutoffs of our t-distribution:
+
+```{r }
+t_99 <- qt(0.995, df_a + df_b)
+```
+
+Making our confidence intervals:
+
+```{r }
+ll <- mean_diff - t_99 * est_se
+ul <- mean_diff + t_99 * est_se
+```
+
+The 99% confidence interval $\mu_{a} - \mu_{b}$ is (`r paste(round(ll, 2), ",", round(ul, 2))`)
+
+The p-value for the hypothesis test that the means are the same can be calculated first by first calculating the T value we observe:
+
+```{r }
+t_obs <- (mean_diff / est_se)
+```
+
+Then, we can find p by using `pt`
+
+```{r }
+prob <- 2*pt(t_obs, 13, lower.tail = FALSE)
+```
+
+(We multiply by two because we must remember there are two tails to this test)
+
+The probability is roughly `r signif(prob, 2)`
