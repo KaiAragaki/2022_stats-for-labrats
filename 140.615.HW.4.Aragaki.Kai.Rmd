@@ -15,7 +15,7 @@ $$
 
 $(\bar X - \bar Y)$ can be calculated like so:
 
-```{r }
+```{r}
 a <- c(84, 106, 99, 101, 100, 99, 127, 105, 101, 108)
 n_a <- length(a)
 df_a <- n_a - 1
@@ -27,13 +27,13 @@ mean_diff <- mean(a) - mean(b)
 
 The pooled estimate of our population $\sigma$ is essentially a weighted mean of our standard deviations:
 
-```{r }
+```{r}
 est_sig_pool <- sqrt((var(a) * df_a + var(b) * df_b) / (df_a + df_b))
 ```
 
 And the estimated standard error is then calculated as
 
-```{r }
+```{r}
 est_se <- est_sig_pool * sqrt(1 / n_a + 1 / n_b)
 ```
 
@@ -41,13 +41,13 @@ Our $t$ distribution should reflect our number of degrees of freedom (`r df_a + 
 
 For 95%, we choose
 
-```{r }
+```{r}
 t_95 <- qt(0.975, df_a + df_b)
 ```
 
 So our confidence intervals become
 
-```{r }
+```{r}
 ll <- mean_diff - t_95 * est_se
 ul <- mean_diff + t_95 * est_se
 ```
@@ -56,13 +56,13 @@ The 95% confidence interval $\mu_{a} - \mu_{b}$ is (`r paste(round(ll, 2), ",", 
 
 The 95% confidence interval can be calculated using a different cutoffs of our t-distribution:
 
-```{r }
+```{r}
 t_99 <- qt(0.995, df_a + df_b)
 ```
 
 Making our confidence intervals:
 
-```{r }
+```{r}
 ll <- mean_diff - t_99 * est_se
 ul <- mean_diff + t_99 * est_se
 ```
@@ -71,16 +71,35 @@ The 99% confidence interval $\mu_{a} - \mu_{b}$ is (`r paste(round(ll, 2), ",", 
 
 The p-value for the hypothesis test that the means are the same can be calculated first by first calculating the T value we observe:
 
-```{r }
+```{r}
 t_obs <- (mean_diff / est_se)
 ```
 
 Then, we can find p by using `pt`
 
-```{r }
+```{r}
 prob <- 2*pt(t_obs, 13, lower.tail = FALSE)
 ```
 
 (We multiply by two because we must remember there are two tails to this test)
 
 The probability is roughly `r signif(prob, 2)`
+
+# Problem 2
+
+Confidence intervals can be expressed with the following formula:
+
+$$
+\bar X \pm \cdot \widehat{SD}(\bar X)
+$$
+ 
+to find $\widehat{SD}(\bar X)$, we use $\widehat{SD}(\bar X) = SD * \sqrt{(1/n)}$
+
+So
+
+```{r}
+ll <- 7.0 - qt(0.95, 24) * 3.0 * sqrt(1/25)
+ul <- 7.0 + qt(0.95, 24) * 3.0 * sqrt(1/25)
+```
+
+Giving the 90% confidence intervals of (`r paste0(round(ll, 2), ", ", round(ul, 2))`)
