@@ -54,7 +54,7 @@ ul <- mean_diff + t_95 * est_se
 
 The 95% confidence interval $\mu_{a} - \mu_{b}$ is (`r paste(round(ll, 2), ",", round(ul, 2))`)
 
-The 95% confidence interval can be calculated using a different cutoffs of our t-distribution:
+The 99% confidence interval can be calculated using a different cutoffs of our t-distribution:
 
 ```{r}
 t_99 <- qt(0.995, df_a + df_b)
