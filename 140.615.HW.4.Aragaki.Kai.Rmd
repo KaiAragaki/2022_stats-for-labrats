@@ -103,3 +103,37 @@ ul <- 7.0 + qt(0.95, 24) * 3.0 * sqrt(1/25)
 ```
 
 Giving the 90% confidence intervals of (`r paste0(round(ll, 2), ", ", round(ul, 2))`)
+
+
+# Problem 3
+
+We must take the differences between before and after values:
+
+```{r}
+df <- data.frame(mouse = 1:6,
+                 before = c(81, 101, 76, 67, 125, 144),
+                 after = c(138, 210, 162, 105, 259, 319))
+df$diff <- df$after - df$before
+```
+
+The question 'does the treatment have an effect' is an ambiguous one, mostly because we cannot answer this definitively. However, we can answer with some degree of certainty, the degree of which we can choose ourselves. I would like to set my 'false positive' rate to be 5% - the standard, for better or worse. Therefore, $\alpha = 0.05$
+
+We can calculate 95% confidence intervals using largely the same equation as in problem 2:
+
+```{r}
+ll <- mean(df$diff) - qt(0.975, nrow(df) - 1) * sd(df$diff) * sqrt(1 / nrow(df))
+ul <- mean(df$diff) + qt(0.975, nrow(df) - 1) * sd(df$diff) * sqrt(1 / nrow(df))
+```
+
+The 95% confidence intervals are then `r paste0(round(ll), ', ', round(ul))`
+
+Recall that this confidence interval is for the DIFFERENCES. The fact that it does not pass through zero leads us to reject $H_{0}$.
+
+The probability can be calculated as we did in problem 1
+
+```{r}
+t_obs <- mean(df$diff) / (sd(df$diff) * sqrt(1 / nrow(df)))
+prob <- 2 * pt(t_obs, nrow(df) - 1, lower.tail = FALSE)
+```
+
+The probability is roughly `r signif(prob, 2)`
