@@ -137,3 +137,31 @@ prob <- 2 * pt(t_obs, nrow(df) - 1, lower.tail = FALSE)
 ```
 
 The probability is roughly `r signif(prob, 2)`
+
+# Problem 4
+
+## A
+
+$H_{0}:$ There is not a significant decrease in white blood cell count between humans infected with _E. canis_ and the general population of humans.
+
+$H_{A}:$ _E. canis_ infection in humans is associated with a significant decrease of white blood cell count as compared to the general population.
+
+## B
+
+We can calculate a T statistic by doing the following:
+
+```{r}
+t_obs <- (7250 - 4767) / (3204 / sqrt(15))
+```
+
+And from there, we can calculate probabilities:
+
+```{r}
+prob <- pt(t_obs, 14, lower.tail = FALSE)
+```
+
+The probability of a sample this extreme given the there was no difference in WBC count between the infected and uninfected population is about  `r signif(prob, 2)`
+
+## C
+
+We reject the null hypothesis that there is not a significant difference in WBC count between infected and uninfected individuals.
