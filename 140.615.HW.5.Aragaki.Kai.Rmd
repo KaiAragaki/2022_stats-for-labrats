@@ -1,0 +1,8 @@
+---
+title: "Homework 5"
+author: "Kai Aragaki"
+output:
+    tufte::tufte_handout: default
+---
+
+# Problem 1
