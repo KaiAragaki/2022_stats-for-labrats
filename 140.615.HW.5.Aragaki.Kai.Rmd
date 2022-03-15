@@ -6,3 +6,110 @@ output:
 ---
 
 # Problem 1
+
+## A
+
+Power can be calculated as such:
+
+$$
+Power = Pr\Big(Z > C - \frac{\Delta}{\sqrt{\frac{\sigma^2_A}{n} + \frac{\sigma^2_B}{m}}}\Big) + Pr\Big(Z < -C - \frac{\Delta}{\sqrt{\frac{\sigma^2_A}{n} + \frac{\sigma^2_B}{m}}}\Big)
+$$
+
+So if we assume $\Delta = 1$ and both $\sigma = \Delta$, $n = m$ and set $Power = 0.8$  then
+
+$$
+0.8 = Pr\Big(Z > C - \frac{\Delta}{\sqrt{\frac{2\Delta^2}{n}}}\Big) + Pr\Big(Z < -C - \frac{\Delta}{\sqrt{\frac{2\Delta^2}{n}}}\Big)
+$$
+
+$$
+0.8 = Pr\Big(Z > C - \frac{1}{\sqrt{\frac{2}{n}}}\Big) + Pr\Big(Z < -C - \frac{1}{\sqrt{\frac{2}{n}}}\Big)
+$$
+
+$$
+0.8 = Pr\Big(Z > C - \sqrt{\frac{n}{2}}\Big) + Pr\Big(Z < -C - \sqrt{\frac{n}{2}}\Big)
+$$
+
+Though not given, it's reasonable to assume that our desired $\alpha = 0.05$, so our critical values $C$ become
+
+$$
+0.8 = Pr\Big(Z > 1.96 - \sqrt{\frac{n}{2}}\Big) + Pr\Big(Z < -1.96 - \sqrt{\frac{n}{2}}\Big)
+$$
+
+
+We then set a threshold value that, when we draw from a normal distribution, we expect to get a value more extreme than it 80% of the time on average. To select such value, we assume that the probability of selecting a value less extreme than these 'thresholds' contributes very minimally to the over 80% power, so much so that we can approximate thusly:
+
+$$
+0.8 \approx Pr\Big(Z > 1.96 - \sqrt{\frac{n}{2}}\Big)
+$$
+
+Finding this value is then simple:
+
+```{r}
+z <- qnorm(0.2)
+```
+
+The resultant $Z$ is roughly `r round(z, 2)`. This is the value that when we sample from a $Normal(0,1)$ distribution, we would expect to get values greater than it on average 80% of the time.
+
+Calculating $n$, then:
+
+$$
+Z > 1.96 - \sqrt{\frac{n}{2}}
+$$
+
+$$
+2(-Z + 1.96)^2 < n 
+$$
+
+so,
+
+```{r}
+n_min <- 2 * (-z + 1.96)^2
+```
+
+The minimum whole value of n is `r ceiling(n_min)`. That is the number of ELISAs we would need per group to obtain a power of 80%.
+
+
+## B
+
+If we only ran 10 ELISAs per group, then
+
+
+$$
+Power \approx Pr(Z > 1.96 - sqrt{10/2})
+$$
+
+So our threshold value is 
+
+```{r}
+z_min <- 1.96 - sqrt(10/2)
+```
+
+Giving a probability of 
+
+```{r}
+p <- pnorm(z_min, lower.tail = FALSE)
+```
+
+Approximately `r paste0(round(p, 2) * 100, "%")`
+
+## C
+
+Our critical value then shifts to account for a single tailed hypothesis:
+
+```{r}
+cv <- qnorm(0.05, lower.tail = FALSE)
+```
+
+So our threshold is now:
+
+```{r}
+z_min <- cv - sqrt(10/2)
+```
+
+Giving a probability of 
+
+```{r}
+p <- pnorm(z_min, lower.tail = FALSE)
+```
+
+Approximately `r paste0(round(p, 2) * 100, "%")`
