@@ -114,3 +114,27 @@ p <- pnorm(z_min, lower.tail = FALSE)
 ```
 
 Approximately `r paste0(round(p, 2) * 100, "%")`
+
+# Problem 2
+
+We know that to calculate a confidence interval with an $\alpha$ of 0.05, we use the following equation:
+
+$$
+\bar X \pm 1.96\sigma/\sqrt{n}
+$$
+
+We assume we know $\sigma$, as we know the standard deviation of the nation and have made the decision to assume that it is the standard deviation of the population of patients. We want each 'arm' of the confidence interval to be 1.5, but we don't know how many patients need to be sampled (that is, $n$). We can solve for $n$ in the above equation and plug in our population standard deviation. Additionally, we drop $\bar X$ as it is not relevant (we are only interested in the width of the interval and not where it is centered).
+
+$$
+1.5 = 1.96\sigma/\sqrt{n}
+$$
+
+$$
+n = (1.96*4.5/1.5)^2
+$$
+
+```{r}
+n_min <- (1.96*4.5/1.5)^2
+```
+
+The closest integer, rounding up, is `r ceiling(n_min)` - so she should pull 35 patient records to produce a mean that she has 95% confidence captures the patient population mean, and additionally has a width of 3 BMI units. 
