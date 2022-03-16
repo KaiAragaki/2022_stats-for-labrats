@@ -137,4 +137,31 @@ $$
 n_min <- (1.96*4.5/1.5)^2
 ```
 
-The closest integer, rounding up, is `r ceiling(n_min)` - so she should pull 35 patient records to produce a mean that she has 95% confidence captures the patient population mean, and additionally has a width of 3 BMI units. 
+The closest integer, rounding up, is `r ceiling(n_min)` - so she should pull 35 patient records to produce a mean that she has 95% confidence captures the patient population mean, and additionally has a width of 3 BMI units.
+
+# Problem 3
+
+# A
+
+```{r}
+a_dat <- c(55.2, 58.1, 41.7, 44.9, 44.8, 48.9, 47.5, 48.4, 51.6, 40.6, 48.0)
+b_dat <- c(48.7, 52.6, 65.2, 70.4, 44.2, 54.7, 44.0, 66.5, 56.8)
+
+tt <- t.test(a_dat, b_dat, alternative = "two.sided", var.equal = TRUE)
+tt
+```
+
+By this method we reject the null hypothesis and gain confidence for the conclusion that these populations are truly different from one another.
+
+# B
+
+```{r}
+wc <- wilcox.test(a_dat, b_dat, alternative = "two.sided")
+wc
+```
+
+By this method we fail to reject the null hypothesis.
+
+# C
+
+If we assume that the response values drawn from each strain population are normally distributed, we reject the null hypothesis that these populations have the same population mean, and gain confidence that there is a differences of the populations means. If we use a signed rank test, which relaxes the assumption of normality of the populations, we no longer reach statistical significance, so in this instance we would fail to reject the null hypothesis. As we did not test for normality, we cannot say with these analyses alone which would be most 'proper'.
