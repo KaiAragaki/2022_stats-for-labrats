@@ -9,7 +9,7 @@ output:
 
 ## A
 
-Power can be calculated as such:
+Power can be calculated by:
 
 $$
 Power = Pr\Big(Z > C - \frac{\Delta}{\sqrt{\frac{\sigma^2_A}{n} + \frac{\sigma^2_B}{m}}}\Big) + Pr\Big(Z < -C - \frac{\Delta}{\sqrt{\frac{\sigma^2_A}{n} + \frac{\sigma^2_B}{m}}}\Big)
@@ -35,8 +35,7 @@ $$
 0.8 = Pr\Big(Z > 1.96 - \sqrt{\frac{n}{2}}\Big) + Pr\Big(Z < -1.96 - \sqrt{\frac{n}{2}}\Big)
 $$
 
-
-We then set a threshold value that, when we draw from a normal distribution, we expect to get a value more extreme than it 80% of the time on average. To select such value, we assume that the probability of selecting a value less extreme than these 'thresholds' contributes very minimally to the over 80% power, so much so that we can approximate thusly:
+We then set a threshold value that, when we draw from a normal distribution, we expect to get a value more extreme than it 80% of the time on average. To select such value, we assume that the probability of selecting a value less extreme than these 'thresholds' contributes very minimally to the over 80% power, so much so that we can approximate:
 
 $$
 0.8 \approx Pr\Big(Z > 1.96 - \sqrt{\frac{n}{2}}\Big)
@@ -47,6 +46,8 @@ Finding this value is then simple:
 ```{r}
 z <- qnorm(0.2)
 ```
+
+We use a normal distribution rather than a t-distribution as we are given the population standard deviation ($\sigma$) rather than the sample standard deviation ($s$)
 
 The resultant $Z$ is roughly `r round(z, 2)`. This is the value that when we sample from a $Normal(0,1)$ distribution, we would expect to get values greater than it on average 80% of the time.
 
